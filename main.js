@@ -1,22 +1,30 @@
-secondLawNewton = 'Програма розрахунку другого закону Ньютона';
-force = 200; // Сила в Ньютонах
-mass = 20; // Маса тіла в кілограмах
-newLine = '</br></br>';
-acceleration = force / mass; // Прискорення тіла в м/с^2
+let age1, age2, age3;
 
-secondLawNewton =
-  secondLawNewton +
-  newLine +
-  '**************' +
-  newLine +
-  'Прискорення тіла (a) при силі F = ' +
-  force +
-  ' та масі m = ' +
-  mass +
-  ':';
-secondLawNewton = secondLawNewton + newLine + '--------------------';
-secondLawNewton = secondLawNewton + newLine + 'a = ' + acceleration;
-secondLawNewton = secondLawNewton + newLine + '-------------------';
-secondLawNewton = secondLawNewton + newLine + 'end.';
-
-document.write(secondLawNewton);
+console.log(
+  '**************\n\n' +
+    'Список студентів, що зареєструвалися на вебінар:' +
+    '\n\n' +
+    '1. ' +
+    (age1 = +prompt('Введіть вік першого студента')) +
+    ' років ' +
+    prompt('Введіть ПІБ першого студента') +
+    '\n\n' +
+    '2. ' +
+    (age2 = +prompt('Введіть вік другого студента')) +
+    ' років ' +
+    prompt('Введіть ПІБ другого студента') +
+    '\n\n' +
+    '3. ' +
+    (age3 = +prompt('Введіть вік третього студента')) +
+    ' років ' +
+    prompt('Введіть ПІБ третього студента') +
+    '\n\n' +
+    '--------------' +
+    '\n\n' +
+    'Середній вік студента: ' +
+    (age1 + age2 + age3) / 3 +
+    '\n\n' +
+    '--------------' +
+    '\n\n' +
+    '**************'
+);
