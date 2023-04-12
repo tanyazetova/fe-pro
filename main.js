@@ -1,4 +1,5 @@
 console.log('Задача-1');
+
 function reverseRow(n) {
   if (n === 0) {
     return;
@@ -9,18 +10,15 @@ function reverseRow(n) {
 reverseRow(5);
 
 console.log('Задача-2');
-function sumTo(array) {
-  let sum = 0;
 
-  for (let i = 0; i < array.length; i++) {
-    sum += array[i];
+function sumToArray(arr) {
+  if (arr.length === 0) {
+    return 0;
+  } else {
+    return arr.pop() + sumToArray(arr);
   }
-
-  return sum;
 }
-
-let result = sumTo([1, 2, 3]);
-
+let result = sumToArray([1, 2, 3]);
 console.log(result, 'sum of array');
 
 console.log('Задача-3');
