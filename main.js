@@ -1,4 +1,4 @@
-let users = [
+const users = [
   {
     index: 0,
     isActive: true,
@@ -54,17 +54,31 @@ let users = [
     address: '314 Dunne Place, Bawcomville, Guam, 9053',
   },
 ];
-function calculateBalance(users) {
-  let sum = 0;
-  for (let i = 0; i < users.length; i++) {
-    let balance = users[i].balance.replace(',', '');
-    balance = +balance.replace('$', '');
-    if (balance > 2000) {
-      console.log(users[i].phone, ', users phone(balance more then 2000)');
-      sum += balance;
-    }
-  }
-  return sum;
+
+function getCoins(price) {
+  return price * 100;
 }
-const result = calculateBalance(users);
-console.log(result, 'sum of users balance(more then 2000)');
+
+function convertbalance(balance) {
+  balance = balance.replace(',', '');
+  balance = +balance.replace('$', '');
+  return getCoins(balance);
+}
+
+function filterBalance(user) {
+  return convertbalance(user.balance) > getCoins(2000);
+}
+
+function telephoneNumbers(users) {
+  return users.map((user) => {
+    return user.phone;
+  });
+}
+
+const filteredUsers = users.filter(filterBalance);
+const balanceSum = filteredUsers.reduce((sum, user) => {
+  return (sum += convertbalance(user.balance));
+}, 0);
+
+console.log(telephoneNumbers(filteredUsers), 'filtered phone numbers');
+console.log(balanceSum, 'sum of users balance(more then 2000)');
