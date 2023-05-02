@@ -4,9 +4,7 @@ const fetchAllProducts = async () => {
 
 async function getAllProducts() {
   const response = await fetchAllProducts();
-  const prouducts = response.products;
-
-  console.log(prouducts, 'prouducts');
+  const products = response.products;
 
   function getImageProductTemplate(thumbnail) {
     return `<div class="image-wrapper">
@@ -44,14 +42,15 @@ async function getAllProducts() {
         <div class="description">${product.description}</div>
         ${getActionsProductTemplate()}
     </div>
-    </section>  `;
+    </section>`;
   }
 
-  const productsTemplate = `
+  function getProductsTemplate(products) {
+    return `
    <article class="products">
-        ${prouducts.map((product) => getProductTemplate(product)).join('')}
-   </article>
-  `;
+        ${products.map((product) => getProductTemplate(product)).join('')}
+   </article>`;
+  }
 
-  document.getElementById('app').innerHTML = productsTemplate;
+  document.getElementById('app').innerHTML = getProductsTemplate(products);
 }
