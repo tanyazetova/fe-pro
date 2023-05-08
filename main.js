@@ -15,6 +15,7 @@ const history = {
 };
 
 const shape = {
+  needCalculate: false,
   dependencies: Object.seal({
     left: 100,
     right: 100,
@@ -26,11 +27,11 @@ const shape = {
     const lastHistoryElement = history.records[history.records.length - 1];
 
     if (
+      !this.needCalculate &&
       lastHistoryElement &&
-      this.dependencies.left === lastHistoryElement.dependencies.left &&
-      this.dependencies.right === lastHistoryElement.dependencies.right &&
-      this.dependencies.top === lastHistoryElement.dependencies.top &&
-      this.dependencies.bottom === lastHistoryElement.dependencies.bottom
+      Object.keys(this.dependencies).every(
+        (key) => this.dependencies[key] === lastHistoryElement.dependencies[key]
+      )
     ) {
       return lastHistoryElement.perimeter;
     }
@@ -44,6 +45,8 @@ const shape = {
       dependencies: this.dependencies,
       perimeter: total,
     });
+
+    this.needCalculate = false;
 
     console.log(history.records);
 
@@ -68,9 +71,13 @@ const shape = {
       dependencies: this.dependencies,
       perimeter: perimeter,
     });
+
+    this.needCalculate = true;
   },
 };
 
+console.log(shape.perimeter, 'shape.perimeter');
+shape.perimeter = 1000;
 console.log(shape.perimeter, 'shape.perimeter');
 console.log(shape.perimeter, 'shape.perimeter');
 console.log(shape.perimeter, 'shape.perimeter');
