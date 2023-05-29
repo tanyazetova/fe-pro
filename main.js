@@ -4,25 +4,30 @@ const smartphones = {
   oneplus: ['Nord AC2003', '9 LE2113', '8T KB2003'],
 };
 smartphones[Symbol.iterator] = function () {
-  const values = Object.values(this).flat();
-  const phones = [];
+  const entries = Object.entries(this);
 
-  for (const brand in this) {
-    for (const name of this[brand]) {
-      phones.push({ brand, name });
-    }
-  }
+  let currentKeyIndex = 0;
+  let currentValueIndex = 0;
 
   return {
-    finish: values.length,
-    current: 0,
-    next() {
-      if (this.current < this.finish) {
-        const phone = phones[this.current++];
-        return { done: false, value: `${phone.brand} - ${phone.name}` };
+    next: function () {
+      if (currentValueIndex >= entries[currentKeyIndex][1].length) {
+        currentKeyIndex++;
+        currentValueIndex = 0;
       }
 
-      return { done: true, value: undefined };
+      if (currentKeyIndex >= entries.length) {
+        return {
+          done: true,
+        };
+      }
+
+      const key = entries[currentKeyIndex][0];
+      const value = entries[currentKeyIndex][1][currentValueIndex++];
+      return {
+        value: `${key} - ${value}`,
+        done: false,
+      };
     },
   };
 };
