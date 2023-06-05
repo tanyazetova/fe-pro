@@ -1,44 +1,96 @@
-function SuperMath() {
-  this.operations = {
-    '-': (x, y) => x - y,
-    '+': (x, y) => +x + +y,
-    '/': (x, y) => x / y,
-    '*': (x, y) => x * y,
-    '%': (x, y) => (x / y) * 100,
-  };
-}
-SuperMath.prototype.check = function (obj) {
-  if (
-    obj &&
-    obj.Y &&
-    obj.X &&
-    obj.znak &&
-    Object.keys(this.operations).includes(obj.znak)
-  ) {
-    if (confirm(`Do you want to calculate ${obj.X} ${obj.znak} ${obj.Y}`)) {
-      return this.operations[obj.znak](obj.X, obj.Y);
-    } else {
-      return this.check(this.input());
-    }
-  } else {
-    return this.check(this.input());
-  }
-};
-SuperMath.prototype.input = function () {
-  const X = prompt('X = ');
-  const Y = prompt('Y = ');
-  const znak = prompt('znak = ');
-  if (!Object.keys(this.operations).includes(znak)) {
-    alert(
-      `Znak incorrect, use one of these: ${Object.keys(this.operations).join(
-        ' '
-      )}`
-    );
-    return this.input();
-  }
-  return { X, Y, znak };
-};
+class HTMLElement {
+  foo = 12; // this.foo = 12
 
-const math = new SuperMath();
-console.log(math.check());
-console.log(math.check({ X: 5, Y: 3, znak: '-' }));
+  constructor(tagName, className, id) {
+    this.tagName = tagName;
+    this.className = className;
+    this.id = id;
+  }
+
+  rotate() {
+    console.log('rotating from HTMLElement', this.tagName);
+  }
+
+  render() {
+    console.log('rendering from HTMLElement', this.tagName);
+  }
+}
+
+class HTMLAnchor extends HTMLElement {
+  href = '';
+
+  #c3 = 25; // private c3 = 25
+
+  constructor(href, ...arg) {
+    super(...arg); // < --- must have call parent constructor
+    this.href = href;
+  }
+
+  // ---- computed ---
+  get hrefWithoutProtocol() {
+    return this.href.slice(9); // https:://
+  }
+
+  set hrefWithoutProtocol(v) {
+    if (true) {
+      this.href = v;
+    }
+  }
+
+  // --- access to private --
+  // security read
+  get c3() {
+    return this.#c3;
+  }
+
+  // security set
+  set c3(v) {
+    // s
+    if (true) {
+      this.#c3 = v;
+    }
+  }
+
+  redirect() {
+    console.log('redirecting...', this.tageName);
+  }
+
+  // polymorphism
+
+  rotate() {
+    console.log('Prepareing rotate from HTMLAnchor', this.tagName);
+  }
+}
+
+class HTMLElementInput extends HTMLElement {
+  #value = '';
+  valid = false;
+
+  constructor(value, ...args) {
+    super(...args);
+    this.value = value;
+  }
+
+  get value() {
+    return this.#value;
+  }
+
+  set value(value) {
+    this.#value = value.trim();
+  }
+
+  validate() {
+    if (this.#value) {
+      this.valid = true;
+    } else {
+      this.valid = false;
+    }
+  }
+}
+
+const input = new HTMLElementInput('Tanya', 'input', 'my-input', 'input1');
+input.validate();
+console.log(input, input.valid);
+input.value = '';
+input.validate();
+console.log(input, input.valid);
