@@ -1,96 +1,62 @@
-class HTMLElement {
-  foo = 12; // this.foo = 12
+class Human {
+  name;
+  age;
 
-  constructor(tagName, className, id) {
-    this.tagName = tagName;
-    this.className = className;
-    this.id = id;
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
   }
-
-  rotate() {
-    console.log('rotating from HTMLElement', this.tagName);
-  }
-
-  render() {
-    console.log('rendering from HTMLElement', this.tagName);
+  getInfoOfHuman() {
+    console.log(`name: ${this.name}, age: ${this.age}`);
   }
 }
 
-class HTMLAnchor extends HTMLElement {
-  href = '';
+class Car {
+  brand;
+  model;
+  year;
+  license;
+  owner;
 
-  #c3 = 25; // private c3 = 25
-
-  constructor(href, ...arg) {
-    super(...arg); // < --- must have call parent constructor
-    this.href = href;
+  constructor(brand, model, year, license) {
+    this.brand = brand;
+    this.model = model;
+    this.year = year;
+    this.license = license;
   }
-
-  // ---- computed ---
-  get hrefWithoutProtocol() {
-    return this.href.slice(9); // https:://
-  }
-
-  set hrefWithoutProtocol(v) {
-    if (true) {
-      this.href = v;
-    }
-  }
-
-  // --- access to private --
-  // security read
-  get c3() {
-    return this.#c3;
-  }
-
-  // security set
-  set c3(v) {
-    // s
-    if (true) {
-      this.#c3 = v;
-    }
-  }
-
-  redirect() {
-    console.log('redirecting...', this.tageName);
-  }
-
-  // polymorphism
-
-  rotate() {
-    console.log('Prepareing rotate from HTMLAnchor', this.tagName);
-  }
-}
-
-class HTMLElementInput extends HTMLElement {
-  #value = '';
-  valid = false;
-
-  constructor(value, ...args) {
-    super(...args);
-    this.value = value;
-  }
-
-  get value() {
-    return this.#value;
-  }
-
-  set value(value) {
-    this.#value = value.trim();
-  }
-
-  validate() {
-    if (this.#value) {
-      this.valid = true;
+  setOwner(driver) {
+    if (driver.age > 18) {
+      this.owner = driver;
     } else {
-      this.valid = false;
+      console.log('to young for driver');
+    }
+  }
+  getInfoOfCar() {
+    console.log(
+      `brand: ${this.brand}, model: ${this.model}, year: ${this.year}, license: ${this.license}`
+    );
+    if (this.owner) {
+      this.owner.getInfoOfHuman();
+    } else {
+      console.log('this car dont have owner');
     }
   }
 }
 
-const input = new HTMLElementInput('Tanya', 'input', 'my-input', 'input1');
-input.validate();
-console.log(input, input.valid);
-input.value = '';
-input.validate();
-console.log(input, input.valid);
+const human1 = new Human('Valera', 20);
+const human2 = new Human('Lena', 17);
+const human3 = new Human('Alex', 47);
+const car1 = new Car('Lexus', 'UX 250h', 2018, 'KX 1830');
+const car2 = new Car('Skoda', 'Octavia  A7', 2017, 'AX 5231');
+const car3 = new Car('Toyota', ' RAV4', 2018, 'BB 2522');
+
+human1.getInfoOfHuman();
+human2.getInfoOfHuman();
+human3.getInfoOfHuman();
+
+car1.setOwner(human1);
+car1.getInfoOfCar();
+car2.setOwner(human2);
+car2.getInfoOfCar();
+car3.setOwner(human3);
+car3.getInfoOfCar();
