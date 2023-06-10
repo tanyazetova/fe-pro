@@ -1,62 +1,81 @@
-class Human {
-  name;
-  age;
-
-  constructor(name, age) {
+class Size {
+  constructor(name, price, calories) {
     this.name = name;
-    this.age = age;
-  }
-  getInfoOfHuman() {
-    console.log(`name: ${this.name}, age: ${this.age}`);
+    this.price = price;
+    this.calories = calories;
   }
 }
 
-class Car {
-  brand;
-  model;
-  year;
-  license;
-  owner;
+class Stuffing {
+  constructor(name, price, calories) {
+    this.name = name;
+    this.price = price;
+    this.calories = calories;
+  }
+}
 
-  constructor(brand, model, year, license) {
-    this.brand = brand;
-    this.model = model;
-    this.year = year;
-    this.license = license;
+class Topping {
+  constructor(name, price, calories) {
+    this.name = name;
+    this.price = price;
+    this.calories = calories;
   }
-  setOwner(driver) {
-    if (driver.age > 18) {
-      this.owner = driver;
-    } else {
-      console.log('to young for driver');
-    }
+}
+
+class Hamburger {
+  static SIZE_SMALL = new Size('Маленький', 50, 20);
+  static SIZE_BIG = new Size('Великий', 100, 40);
+  static STUFFING_CHEESE = new Stuffing('Сир', 10, 20);
+  static STUFFING_SALAD = new Stuffing('Салат', 20, 5);
+  static STUFFING_POTATO = new Stuffing('Картопля', 15, 10);
+  static TOPPING_SAUCE = new Topping('Приправа', 15, 0);
+  static TOPPING_MAYO = new Topping('Майонез', 20, 5);
+
+  constructor(size, stuffing) {
+    this.size = size;
+    this.stuffing = stuffing;
+    this.toppings = [];
   }
-  getInfoOfCar() {
-    console.log(
-      `brand: ${this.brand}, model: ${this.model}, year: ${this.year}, license: ${this.license}`
+
+  addTopping(topping) {
+    this.toppings.push(topping);
+  }
+
+  calculatePrice() {
+    const sizePrice = this.size.price;
+    const stuffingPrice = this.stuffing.price;
+    const toppingsPrice = this.toppings.reduce(
+      (total, topping) => total + topping.price,
+      0
     );
-    if (this.owner) {
-      this.owner.getInfoOfHuman();
-    } else {
-      console.log('this car dont have owner');
-    }
+    return sizePrice + stuffingPrice + toppingsPrice;
+  }
+
+  calculate() {
+    const sizeCalories = this.size.calories;
+    const stuffingCalories = this.stuffing.calories;
+    const toppingsCalories = this.toppings.reduce(
+      (total, topping) => total + topping.calories,
+      0
+    );
+    return sizeCalories + stuffingCalories + toppingsCalories;
   }
 }
 
-const human1 = new Human('Valera', 20);
-const human2 = new Human('Lena', 17);
-const human3 = new Human('Alex', 47);
-const car1 = new Car('Lexus', 'UX 250h', 2018, 'KX 1830');
-const car2 = new Car('Skoda', 'Octavia  A7', 2017, 'AX 5231');
-const car3 = new Car('Toyota', ' RAV4', 2018, 'BB 2522');
+// маленький гамбургер з начинкою з сиру
+var hamburger = new Hamburger(Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
 
-human1.getInfoOfHuman();
-human2.getInfoOfHuman();
-human3.getInfoOfHuman();
+// добавка з майонезу
+hamburger.addTopping(Hamburger.TOPPING_MAYO);
 
-car1.setOwner(human1);
-car1.getInfoOfCar();
-car2.setOwner(human2);
-car2.getInfoOfCar();
-car3.setOwner(human3);
-car3.getInfoOfCar();
+// запитаємо скільки там калорій
+console.log('Calories: ' + hamburger.calculate());
+
+// скільки коштує
+console.log('Price: ' + hamburger.calculatePrice());
+
+// я тут передумав і вирішив додати ще приправу
+hamburger.addTopping(Hamburger.TOPPING_SAUCE);
+
+// А скільки тепер коштує?
+console.log('Price with sauce: ' + hamburger.calculatePrice());
