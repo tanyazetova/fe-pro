@@ -1,44 +1,48 @@
-function SuperMath() {
-  this.operations = {
-    '-': (x, y) => x - y,
-    '+': (x, y) => +x + +y,
-    '/': (x, y) => x / y,
-    '*': (x, y) => x * y,
-    '%': (x, y) => (x / y) * 100,
-  };
-}
-SuperMath.prototype.check = function (obj) {
-  if (
-    obj &&
-    obj.Y &&
-    obj.X &&
-    obj.znak &&
-    Object.keys(this.operations).includes(obj.znak)
-  ) {
-    if (confirm(`Do you want to calculate ${obj.X} ${obj.znak} ${obj.Y}`)) {
-      return this.operations[obj.znak](obj.X, obj.Y);
-    } else {
-      return this.check(this.input());
-    }
-  } else {
-    return this.check(this.input());
-  }
-};
-SuperMath.prototype.input = function () {
-  const X = prompt('X = ');
-  const Y = prompt('Y = ');
-  const znak = prompt('znak = ');
-  if (!Object.keys(this.operations).includes(znak)) {
-    alert(
-      `Znak incorrect, use one of these: ${Object.keys(this.operations).join(
-        ' '
-      )}`
-    );
-    return this.input();
-  }
-  return { X, Y, znak };
-};
+const inputRange = document.querySelector('.input-range');
+const inputText = document.querySelector('.input-text');
+const diagramValue = document.querySelector('.diagram-value');
+const diagramFee = document.querySelector('.diagram-fee');
+const result = document.querySelector('.result');
 
-const math = new SuperMath();
-console.log(math.check());
-console.log(math.check({ X: 5, Y: 3, znak: '-' }));
+function onRangeChange(event) {
+  inputText.value = event.target.value;
+  updateDiagram(event.target.value);
+}
+
+function onInputChange(event) {
+  if (+event.target.value > +event.target.max) {
+    event.target.value = +event.target.max;
+  }
+  if (+event.target.value < +event.target.min) {
+    event.target.value = +event.target.min;
+  }
+  inputRange.value = event.target.value;
+  updateDiagram(event.target.value);
+}
+
+function updateDiagram(value) {
+  value = +value;
+  const fee = calculateFee(value);
+
+  diagramValue.style.height = value + 'px';
+  diagramFee.style.height = fee + 'px';
+  result.innerHTML = value + fee;
+}
+
+function calculateFee(value) {
+  switch (true) {
+    case value < 20:
+      return value * 0.02;
+    case value < 50:
+      return value * 0.04;
+    case value < 75:
+      return value * 0.06;
+    case value <= 100:
+      return value * 0.08;
+  }
+}
+
+inputRange.addEventListener('change', onRangeChange);
+inputText.addEventListener('change', onInputChange);
+
+updateDiagram(inputRange.value);

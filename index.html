@@ -5,10 +5,43 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homework-1</title>
+    <title>Homework-46</title>
+    <style>
+        .diagram-outer {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            width: 30px;
+            height: 150px;
+            border: 1px solid black;
+        }
+
+        .diagram-value {
+            background-color: green;
+        }
+
+        .diagram-fee {
+            background-color: red;
+        }
+
+        .result {
+            font-size: 26px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
+    <input class="input-range" min="0" max="100" value="50" type="range">
+    <input class="input-text" type="number" max="100" min="0" value="50">
+    <div class="diagram">
+        <div class="diagram-outer">
+            <div class="diagram-fee"></div>
+            <div class="diagram-value"></div>
+        </div>
+    </div>
+    <p class="result"></p>
+
     <script src="main.js"></script>
 </body>
 
