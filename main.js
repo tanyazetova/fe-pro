@@ -5,19 +5,31 @@ const diagramFee = document.querySelector('.diagram-fee');
 const result = document.querySelector('.result');
 
 function onRangeChange(event) {
-  inputText.value = event.target.value;
-  updateDiagram(event.target.value);
+  const value = +event.target.value;
+  inputText.value = value;
+  updateDiagram(value);
 }
 
 function onInputChange(event) {
-  if (+event.target.value > +event.target.max) {
-    event.target.value = +event.target.max;
+  const elem = event.target;
+  let value = +elem.value;
+
+  value = validateInputValue(elem, value);
+  inputRange.value = value;
+  updateDiagram(value);
+}
+
+function validateInputValue(elem, value) {
+  const min = +elem.min,
+    max = +elem.max;
+  if (value > max) {
+    value = max;
   }
-  if (+event.target.value < +event.target.min) {
-    event.target.value = +event.target.min;
+  if (value < min) {
+    value = min;
   }
-  inputRange.value = event.target.value;
-  updateDiagram(event.target.value);
+  elem.value = value;
+  return value;
 }
 
 function updateDiagram(value) {
