@@ -1,44 +1,57 @@
-function SuperMath() {
-  this.operations = {
-    '-': (x, y) => x - y,
-    '+': (x, y) => +x + +y,
-    '/': (x, y) => x / y,
-    '*': (x, y) => x * y,
-    '%': (x, y) => (x / y) * 100,
-  };
+function incrementCounter(blockId) {
+  const counterElement = document
+    .getElementById(blockId)
+    .querySelector('input[type=number]');
+  let counterValue = parseInt(counterElement.value);
+  counterValue++;
+  counterElement.value = counterValue;
+  saveCounter(blockId, counterValue);
 }
-SuperMath.prototype.check = function (obj) {
-  if (
-    obj &&
-    obj.Y &&
-    obj.X &&
-    obj.znak &&
-    Object.keys(this.operations).includes(obj.znak)
-  ) {
-    if (confirm(`Do you want to calculate ${obj.X} ${obj.znak} ${obj.Y}`)) {
-      return this.operations[obj.znak](obj.X, obj.Y);
-    } else {
-      return this.check(this.input());
-    }
-  } else {
-    return this.check(this.input());
-  }
-};
-SuperMath.prototype.input = function () {
-  const X = prompt('X = ');
-  const Y = prompt('Y = ');
-  const znak = prompt('znak = ');
-  if (!Object.keys(this.operations).includes(znak)) {
-    alert(
-      `Znak incorrect, use one of these: ${Object.keys(this.operations).join(
-        ' '
-      )}`
-    );
-    return this.input();
-  }
-  return { X, Y, znak };
-};
 
-const math = new SuperMath();
-console.log(math.check());
-console.log(math.check({ X: 5, Y: 3, znak: '-' }));
+function saveCounter(blockId, counterValue) {
+  localStorage.setItem(blockId, counterValue);
+}
+
+function getCounter(blockId) {
+  let counterValue = localStorage.getItem(blockId);
+  if (counterValue === null) {
+    counterValue = 0;
+  } else {
+    counterValue = parseInt(counterValue);
+  }
+  return counterValue;
+}
+
+function setCounter() {
+  const blockId = prompt('Введіть id блоку:');
+  const counterValue = parseInt(prompt('Введіть значення лічильника:'));
+  const counterElement = document
+    .getElementById(blockId)
+    ?.querySelector('input[type=number]');
+  if (counterElement) {
+    counterElement.value = counterValue;
+    saveCounter(blockId, counterValue);
+  } else {
+    alert('Блок з таким id не знайдений.');
+  }
+}
+
+function clearCounters() {
+  const counterElements = document.querySelectorAll('input[type=number]');
+  counterElements.forEach((counterElement) => {
+    const blockId = counterElement.parentNode.id;
+    counterElement.value = 0;
+    saveCounter(blockId, 0);
+  });
+}
+
+function start() {
+  const counterElements = document.querySelectorAll('input[type=number]');
+  counterElements.forEach((counterElement) => {
+    const blockId = counterElement.parentNode.id;
+    const counterValue = getCounter(blockId);
+    counterElement.value = counterValue;
+  });
+}
+
+start();
