@@ -1,40 +1,27 @@
-function handleCellClick(event) {
-  const { target } = event;
-
-  if (target.tagName === 'TD') {
-    const cell = target;
-    const currentText = cell.innerText;
-    cell.innerText = '';
-
-    const textarea = document.createElement('textarea');
-    textarea.value = currentText;
-
-    const saveButton = createButton('Save');
-    const cancelButton = createButton('Cancel');
-
-    cell.appendChild(textarea);
-    cell.appendChild(saveButton);
-    cell.appendChild(cancelButton);
-
-    saveButton.addEventListener('click', () => saveChanges(cell, textarea));
-    cancelButton.addEventListener('click', () =>
-      cancelEditing(cell, currentText)
-    );
-  }
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function createButton(text) {
-  const button = document.createElement('button');
-  button.textContent = text;
-  return button;
+function displayRandomImage() {
+  const images = [
+    '1.jpg',
+    '2.jpg',
+    '3.jpg',
+    '4.jpg',
+    '5.jpg',
+    '6.jpg',
+    '7.jpg',
+    '8.jpg',
+    '9.jpg',
+  ];
+
+  const randomIndex = getRandomNumber(0, images.length - 1);
+  const randomImage = images[randomIndex];
+
+  const imgElement = document.createElement('img');
+  imgElement.src = `images/${randomImage}`;
+
+  document.body.appendChild(imgElement);
 }
 
-function saveChanges(cell, textarea) {
-  cell.innerText = textarea.value;
-}
-
-function cancelEditing(cell, previousText) {
-  cell.innerText = previousText;
-}
-
-document.getElementById('table').addEventListener('click', handleCellClick);
+displayRandomImage();
