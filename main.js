@@ -1,57 +1,40 @@
-function incrementCounter(blockId) {
-  const counterElement = document
-    .getElementById(blockId)
-    .querySelector('input[type=number]');
-  let counterValue = parseInt(counterElement.value);
-  counterValue++;
-  counterElement.value = counterValue;
-  saveCounter(blockId, counterValue);
-}
+function handleCellClick(event) {
+  const { target } = event;
 
-function saveCounter(blockId, counterValue) {
-  localStorage.setItem(blockId, counterValue);
-}
+  if (target.tagName === 'TD') {
+    const cell = target;
+    const currentText = cell.innerText;
+    cell.innerText = '';
 
-function getCounter(blockId) {
-  let counterValue = localStorage.getItem(blockId);
-  if (counterValue === null) {
-    counterValue = 0;
-  } else {
-    counterValue = parseInt(counterValue);
-  }
-  return counterValue;
-}
+    const textarea = document.createElement('textarea');
+    textarea.value = currentText;
 
-function setCounter() {
-  const blockId = prompt('Введіть id блоку:');
-  const counterValue = parseInt(prompt('Введіть значення лічильника:'));
-  const counterElement = document
-    .getElementById(blockId)
-    ?.querySelector('input[type=number]');
-  if (counterElement) {
-    counterElement.value = counterValue;
-    saveCounter(blockId, counterValue);
-  } else {
-    alert('Блок з таким id не знайдений.');
+    const saveButton = createButton('Save');
+    const cancelButton = createButton('Cancel');
+
+    cell.appendChild(textarea);
+    cell.appendChild(saveButton);
+    cell.appendChild(cancelButton);
+
+    saveButton.addEventListener('click', () => saveChanges(cell, textarea));
+    cancelButton.addEventListener('click', () =>
+      cancelEditing(cell, currentText)
+    );
   }
 }
 
-function clearCounters() {
-  const counterElements = document.querySelectorAll('input[type=number]');
-  counterElements.forEach((counterElement) => {
-    const blockId = counterElement.parentNode.id;
-    counterElement.value = 0;
-    saveCounter(blockId, 0);
-  });
+function createButton(text) {
+  const button = document.createElement('button');
+  button.textContent = text;
+  return button;
 }
 
-function start() {
-  const counterElements = document.querySelectorAll('input[type=number]');
-  counterElements.forEach((counterElement) => {
-    const blockId = counterElement.parentNode.id;
-    const counterValue = getCounter(blockId);
-    counterElement.value = counterValue;
-  });
+function saveChanges(cell, textarea) {
+  cell.innerText = textarea.value;
 }
 
-start();
+function cancelEditing(cell, previousText) {
+  cell.innerText = previousText;
+}
+
+document.getElementById('table').addEventListener('click', handleCellClick);
