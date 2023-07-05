@@ -1,27 +1,53 @@
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const express = require('express');
+const app = express();
+const data = require('./data.json');
 
-function displayRandomImage() {
-  const images = [
-    '1.jpg',
-    '2.jpg',
-    '3.jpg',
-    '4.jpg',
-    '5.jpg',
-    '6.jpg',
-    '7.jpg',
-    '8.jpg',
-    '9.jpg',
-  ];
+app.get('/products', (req, res) => {
+  const { query } = req;
 
-  const randomIndex = getRandomNumber(0, images.length - 1);
-  const randomImage = images[randomIndex];
+  let filteredProducts = data;
+  if (query.stock) {
+    const isStock = query.stock === 'true';
+    filteredProducts = filteredProducts.filter(
+      (product) => product.productStock === isStock
+    );
+  }
 
-  const imgElement = document.createElement('img');
-  imgElement.src = `images/${randomImage}`;
+  if (query.minPrice && query.maxPrice) {
+    const minPrice = parseFloat(query.minPrice);
+    const maxPrice = parseFloat(query.maxPrice);
+    filteredProducts = filteredProducts.filter((product) => {
+      const price = parseFloat(product.productPrice);
+      return price >= minPrice && price <= maxPrice;
+    });
+  }
 
-  document.body.appendChild(imgElement);
-}
+  res.json(filteredProducts);
+});
 
-displayRandomImage();
+app.get('/products/search', (req, res) => {
+  const { query } = req;
+  const productName = query.productName.toLowerCase();
+  const matchingProducts = data.filter((product) =>
+    product.productName.toLowerCase().includes(productName)
+  );
+
+  res.json(matchingProducts);
+});
+
+app.get('/products/:id', (req, res) => {
+  const productId = parseInt(req.params.id);
+  const product = data.find((product) => product.productId === productId);
+
+  if (product) {
+    res.json(product);
+  } else {
+    res.status(404).json({ message: 'Product not found' });
+  }
+});
+
+const port = 3000;
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

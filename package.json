@@ -1,0 +1,22 @@
+{
+  "name": "fe-pro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanyazetova/fe-pro.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tanyazetova/fe-pro/issues"
+  },
+  "homepage": "https://github.com/tanyazetova/fe-pro#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
