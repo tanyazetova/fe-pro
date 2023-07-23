@@ -1,57 +1,36 @@
-function incrementCounter(blockId) {
-  const counterElement = document
-    .getElementById(blockId)
-    .querySelector('input[type=number]');
-  let counterValue = parseInt(counterElement.value);
-  counterValue++;
-  counterElement.value = counterValue;
-  saveCounter(blockId, counterValue);
-}
-
-function saveCounter(blockId, counterValue) {
-  localStorage.setItem(blockId, counterValue);
-}
-
-function getCounter(blockId) {
-  let counterValue = localStorage.getItem(blockId);
-  if (counterValue === null) {
-    counterValue = 0;
-  } else {
-    counterValue = parseInt(counterValue);
-  }
-  return counterValue;
-}
-
-function setCounter() {
-  const blockId = prompt('Введіть id блоку:');
-  const counterValue = parseInt(prompt('Введіть значення лічильника:'));
-  const counterElement = document
-    .getElementById(blockId)
-    ?.querySelector('input[type=number]');
-  if (counterElement) {
-    counterElement.value = counterValue;
-    saveCounter(blockId, counterValue);
-  } else {
-    alert('Блок з таким id не знайдений.');
-  }
-}
-
-function clearCounters() {
-  const counterElements = document.querySelectorAll('input[type=number]');
-  counterElements.forEach((counterElement) => {
-    const blockId = counterElement.parentNode.id;
-    counterElement.value = 0;
-    saveCounter(blockId, 0);
+function getValueFromTable(value, shouldResolve) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (shouldResolve) {
+        resolve(value);
+      } else {
+        reject(value);
+      }
+    }, 250);
   });
 }
 
-function start() {
-  const counterElements = document.querySelectorAll('input[type=number]');
-  counterElements.forEach((counterElement) => {
-    const blockId = counterElement.parentNode.id;
-    const counterValue = getCounter(blockId);
-    counterElement.value = counterValue;
-  });
+function logValue(value) {
+  console.log(value);
 }
 
-start();
+getValueFromTable(0, true)
+  .then(logValue)
+  .then(() => getValueFromTable(1, true))
+  .then(logValue)
+  .then(() => getValueFromTable(3, true))
+  .then(logValue)
+  .then(() => getValueFromTable(6, true))
+  .then(logValue)
+  .then(() => getValueFromTable(8, true))
+  .then(logValue)
+  .then(() => getValueFromTable(0, false))
+  .catch(logValue)
+  .then(() => getValueFromTable(2, false))
+  .catch(logValue)
+  .then(() => getValueFromTable(3, false))
+  .catch(logValue)
+  .then(() => getValueFromTable(6, false))
+  .catch(logValue)
+  .then(() => getValueFromTable(7, false))
+  .catch(logValue);
